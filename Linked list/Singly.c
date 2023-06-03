@@ -80,7 +80,7 @@ void add_at_pos(struct node* head ,int data ,int position){
 
 }
 void del_at_beg(struct node* head){
-    //struct node* temp=malloc(sizeof(struct node));
+  
     struct node* temp;
     temp =head;
     head =head->link;
@@ -143,40 +143,34 @@ void search(){
  }
   
 }
-// void concat(){
-//     struct node* head1 =malloc(sizeof(struct node));
-//     struct node* temp ;
-//     temp =head;
-//     while(temp->link != NULL){
-//         temp=temp->link;
-//         temp->link=head1;
-//     }
-//     struct node* ptr ;
-//     ptr =head;
-//     while(ptr != NULL){
-//         printf("%d ",ptr->data);
-//         ptr =ptr->link;
-//     }
-// }
-void swap(){
-    int temp ;
-    int a,b;
-    a =temp;
-    a =b;
-    temp=b;
-}
-void sorting(struct node *head){
-    struct node* temp =malloc(sizeof(struct node));
-    temp =head;
-    struct node* ptr;
-    while(temp->link != NULL){
-       ptr =temp->link;
 
-       while(ptr != NULL)
-       if(ptr->data < temp->data)
-       swap();
-    }
-    temp =temp->link;
+void swapNodes(struct node* a, struct node* b) {
+    int temp = a->data;
+    a->data = b->data;
+    b->data = temp;
+}
+
+void sortLinkedList(struct node* head) {
+    if (head == NULL)
+        return;
+
+    int swapped;
+    struct node* current;
+    struct node* last = NULL;
+
+    do {
+        swapped = 0;
+        current = head;
+
+        while (current->link != last) {
+            if (current->data > current->link->data) {
+                swapNodes(current, current->link);
+                swapped = 1;
+            }
+            current = current->link;
+        }
+        last = current;
+    } while (swapped);
 }
 void reverse(struct node* head){
     struct node *ptr,*temp1,*temp2;
@@ -223,8 +217,8 @@ int main(){
        creat_node(value);
     }
     
-    display();
-    traversal(head);
+    // display();
+    // traversal(head);
     
     
     // printf("\nList after inserting element at beg :");
@@ -242,11 +236,12 @@ int main(){
     // del_at_pos(head,3);
     // search();    
     // concat();
-    // sorting(head);
+    printf("\nSorted list :");
+    sortLinkedList(head);
+    display();
+    printf("\nList in reverse order :");
     reverse(head);
+    display();
     
-
-   
-
     return 0;
 }
