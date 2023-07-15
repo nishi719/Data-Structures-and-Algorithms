@@ -1,114 +1,99 @@
 #include<stdio.h>
 #include<stdlib.h>
-void length(char a[50]){
+int length(char a[]){
      int i,l=0;
      for(i=0;a[i] != '\0';i++){
         l++;
      }
-    printf("\nLength of string : %d" ,l);
+    return l;
 }
-void index_of(char a[],char c){
-    int i=0;
-   for(i=0;a[i]!='\0';i++){
-    if(a[i]==c){
-       printf("Character %c found at index %d ",c,i);
-    }  
-   }
-   printf("Character %c not found ",c); 
+int index_of(char a[],char c){
+   for(int i=0; i<length(a); i++)
+    {
+        if(a[i]==c)
+            return i;
+    }
+
+    return -1;
     
 }
 
-int get_char(char* ch ,int index){
-    int i;
-    for(i=0;ch[i] != '\0' && index; i++){
-       
-    }
-    if(ch[i] !=0){
-        printf("\nCharacter at index %d : %c" ,index,ch);
-    }
-    else{
-        printf("\nInvalid index");
-    }
+char get_char(char ch[] ,int index){
+     if(index>=length(ch))
+        return '\0';
+
+    return ch[index];
     
 }
 void putChar(char* c,int index,char a){
-   int i;
-    for(i=0;i<index && c[i] != '\0' ;i++ ){
-       
-    }
-   if(c[i] != '\0'){
-    c[i] = a;   
-
-   }
+   for(int j=length(c)-1; j>=index; j--)
+        c[j+1] = c[j];
+    c[index] = a;
    
 }
-void concat( char p[25] ,char q[15]){
-    int i, l=0;
-    for(i=0;p[i] != '\0';i++){
-        l++;
-    }
-    for(i=0; q[i] != '\0' ; i++){
-       p[l+i] = q[i];
-    }
-    p[l+i] = '\0';
-    printf("\nString after concat : %s" , p);
+void concat( char* p ,char* q){
+   int i;
+    int j = length(p);
+    for(i=0; q[i]!='\0'; i++)
+        p[i+j] = q[i];
+    p[i+j] = '\0';
 
 }
-void sub_string(char* a, char* substr){
-    int i,j,k;
+void substring(char a[], int i, int size, char* s)
+{
+    int k=0;
+    for(int j=i; j<size; j++)
+    {
+        s[k] = a[j];
+        k++;
+    }
+}
 
-    for(i=0;a[i] !='\0';i++){
-        j=0;
-        k=i;
-
-        while(substr[j] != '\0' && a[k] == substr[i])
+int compare(char* a, char* b)
+{
+    int flag = 0;
+    while(*a!='\0' || *b!='\0')
+    {
+        if(*a==*b)
         {
-            k++;
-            j++;
+            a++;
+            b++;
         }
-        if(substr[j] == '\0'){
-            printf("\nSubstring found at index %d" ,i);
-            }
-        else{
-            printf("\nSubstring not found");
-
-    }
-}
-}
-
-void compare(char a[50] ,char b[50]){
-     int i,flag=0;
-     for(i=0;a[1] != '\0' && b[i] != '\0';i++){
-        if(a[i] != b[i])
-         flag =1;
-         break;
-     }
-     if(flag ==0 && a[i] == '\0' && b[i] =='\0'){
-        printf("\nString are same ");
-     }
-     else{
-        printf("\nString are not same" );
-     }
-}
-void delete(char ch[20],int i,int size){
-    int j;
-    for(j=0;ch[j] != '\0' ; j++){
-        if(ch[j]== ch[i]){
-            size--;
+        else if((*a=='\0' || *b!='\0') || *a!=*b)
+        {
+            flag = 1; 
+            return -1;
+        }
+        else if((*b=='\0' || *a!='\0') || *a!=*b)
+        {
+            flag = 1; 
+            return 1;
         }
     }
-    printf("String after deletion : %s",ch);
-}
-void copy(char p[15] ,char q[20]){
-    int i;
-    for(i=0;p[i] != '\0' ;i++){
-        q[i] = p[i];
+    if (flag==0)
+    {
+        return 0;
     }
-    q[i] = '\0';
-    printf("\nString after copy : %s" , q);
+}
+void delete(char* a, int i, int size)
+{
+    for(int j=size; j<length(a);j++)
+    {
+        a[i] = a[j];
+        i++;
+    }
+    for(int k=i; k<length(a); k++)
+        a[k] = '\0';
 }
 
-void reverse(char a[50]){
+
+void copy(char* a, char* b)
+{
+    for(int i=0; i<length(a); i++)
+        b[i] = a[i];
+}
+
+void reverse(char a[]){
     char temp;
     int i,j,l=0;
     for(i=0;a[i] !='\0';i++){
@@ -116,14 +101,12 @@ void reverse(char a[50]){
     }
     i=0;
     j=i-1;
-    while(i<j){
-        temp=a[i];
-        a[i]=a[j];
+    for(i=0,j=l-1;i<j ;i++,j--) {
+        temp =a[i];
+        a[i] =a[j];
         a[j]=temp;
-        i++;
-        j--;
-        }
-    printf("\nString after reverse : %s",a);    
+    } 
+    
 }
 void lower_to_upper(char a[50]){
     int i;
@@ -143,118 +126,159 @@ void upper_to_lower(char a[50]){
 
 int main(){
 
-    char a[50],b[50];
-    int choice;
-    while(1){
-        printf("\nString operation: ");
-        printf("\n\n1.Length of string: ");
-        printf("\n2.Reverse : ");
-        printf("\n3.Lower to Uppercase : ");
-        printf("\n4.Upper to Lowercase : ");
-        printf("\n5.Compare : ");
-        printf("\n6.Index of string: ");
-        printf("\n7.Putchar: ");
-        printf("\n8.getchar: ");
-        printf("\n9.Copy : ");
-        printf("\n10.Delete : ");
-        printf("\n11.Substring : ");
-        printf("\n12.Concatenation of two string : ");
-        printf("\n13.Exit : ");
+    // char a[50],b[50];
+    // int choice;
+    // int index ;
+    // char ch;
+    // while(1){
+    //     printf("\nString operation: ");
+    //     printf("\n\n1.Length of string: ");
+    //     printf("\n2.Reverse : ");
+    //     printf("\n3.Lower to Uppercase : ");
+    //     printf("\n4.Upper to Lowercase : ");
+    //     printf("\n5.Compare : ");
+    //     printf("\n6.Index of string: ");
+    //     printf("\n7.Putchar: ");
+    //     printf("\n8.getchar: ");
+    //     printf("\n9.Copy : ");
+    //     printf("\n10.Delete : ");
+    //     printf("\n11.Substring : ");
+    //     printf("\n12.Concatenation of two string : ");
+    //     printf("\n13.Exit : ");
 
-        printf("\nEnter your choice :");
-        scanf("%d",&choice);
-        switch(choice){
-            case 1:
-              printf("\nEnter the string :");
-               scanf("%d",a);
-              length(a);
-              break;
+    //     printf("\nEnter your choice :");
+    //     scanf("%d",&choice);
+    //     switch(choice){
+    //         case 1:
+    //           printf("\nEnter the string :");
+    //            scanf("%s",a);
+    //           length(a);
+    //           break;
 
-            case 2:
-              printf("\nEnter the string :");
-              scanf("%d",a);
-              reverse(a);
-              break;
-            case 3:
-              printf("\nEnter the string in lower case :");
-              scanf("%d",a);
-              lower_to_upper(a);
-              break;
- 
-            case 4:
-               printf("\nEnter the string in upper case :");
-                scanf("%d",a);
-               upper_to_lower(a);
-               break;
-
-            case 5:
-                printf("\nEnter the 1st string :");
-                scanf("%d",a);
-                printf("\nEnter the 2nd string :");
-                 scanf("%d",a);
-                compare(a,b);
-                break;
-            case 6:
-               printf("\nEnter the string :");
-               scanf("%d",a);
-               printf("\nEnter char of string want index :");
-               scanf("%d",a);
-               index_of(a,b);
-               break;
-
-            case 7:
-               int c;
-                printf("\nEnter the string :");
-                scanf("%s",a);
-                printf("Enter the position to get char");
-                scanf("%d",&c);
-                get_char(a,c);
-                break;
-
-            case 8:
-            int index ;
-            char ch;
-              printf("\nEnter the string :");
-              scanf("%d",a);
-              printf("Enter the index want to put char :");
-              scanf("%d",&index);
-              printf("\Enter the char want to put in string :");
-              scanf("%c",ch);
-              putChar(a,index,ch);
-              break;
-
-            case 9:
-               printf("\nEnter a string :");
-               scanf("%s", a);
-               copy(a,b);
-               break;
-
-            case 10:
-                printf("Enter the string :");
-                scanf("%s",a);
-                int count=0;
-                for(int i=0;a[i] != '\0';i++){
-                count++;
-                }
-                delete(a,2,count);
-            case 11:
-            case 12:
-                printf("\nEnter the 1st string :");
-                scanf("%s",a);
-                printf("\nEnter the 2nd string :");
-                scanf("%s",b);
-                concat(a,b);
-                break;
-            case 13:
-               exit(1);
-               break;
-           
-            default :
-                printf("\nWrong choice");
-                break;
+    //         case 2:
+    //           printf("\nEnter the string :");
+    //           scanf("%s",a);
+    //           reverse(a);
+    //           printf("\nString after reverse : %s" , a);
               
-        }
-    }
+    //           break;
+    //         case 3:
+    //           printf("\nEnter the string in lower case :");
+    //           scanf("%s",a);
+    //           lower_to_upper(a);
+    //           break;
+ 
+    //         case 4:
+    //            printf("\nEnter the string in upper case :");
+    //             scanf("%s",a);
+    //            upper_to_lower(a);
+    //            break;
+
+    //         case 5:
+    //             printf("\nEnter the 1st string :");
+    //             scanf("%s",a);
+    //             printf("\nEnter the 2nd string :");
+    //              scanf("%d",a);
+    //             compare(a,b);
+    //             break;
+    //         case 6:
+    //            printf("\nEnter the string :");
+    //            scanf("%s",a);
+    //            printf("\nEnter char of string want index :");
+    //            scanf("%s",b);
+    //            index_of(a,b);
+    //            break;
+
+    //         case 7:
+              
+    //             printf("\nEnter the string :");
+    //             scanf("%s",a);
+    //             printf("Enter the position to get char");
+    //             scanf("%d",&index);
+    //             get_char(a,index);
+    //             break;
+
+    //         case 8:
+            
+    //           printf("\nEnter the string :");
+    //           scanf("%s",a);
+    //           printf("Enter the index want to put char :");
+    //           scanf("%d",&index);
+    //           printf("\Enter the char want to put in string :");
+    //           scanf("%s",ch);
+    //           putChar(a,index,ch);
+    //           break;
+
+    //         case 9:
+    //            printf("\nEnter a string :");
+    //            scanf("%s", a);
+    //            copy(a,b);
+    //            break;
+
+    //         case 10:
+    //             printf("Enter the string :");
+    //             scanf("%s",a);
+    
+    //             delete(a,0,2);
+    //         case 11:
+    //             printf("\Enter the string :");
+    //             scanf("%s",a);
+    //             printf("\nEnter the substring :");
+    //             scanf("%s",b);
+    //             substring(a,1,3,b);
+    //             break;
+    //         case 12:
+    //             printf("\nEnter the 1st string :");
+    //             scanf("%s",a);
+    //             printf("\nEnter the 2nd string :");
+    //             scanf("%s",b);
+    //             concat(a,b);
+    //             break;
+    //         case 13:
+    //            exit(1);
+    //            break;
+           
+    //         default :
+    //             printf("\nWrong choice");
+    //             break;
+              
+    //     }
+    // }
+
+    char str[50] = "NISHI";
+    char s[] = "KUMARI";
+    char result[100];
+
+    printf("\nlength of string = %d\n", length(str));
+    printf("\nIndex of B = %d\n", index_of(str, 'B'));
+    printf("\nChar at 2 index in str = %c\n", get_char(str, 2));
+    putChar(str, 4, '@');
+    printf("%s\n", str);
+    printf("\nString after concatenation :");
+    concat(str, s);
+    printf("%s\n",str);
+    printf("\nString after coping :");
+    copy(str, result);
+    printf("%s\n",result);
+    printf("\nString after deletion :");
+    delete(str, 0, 2);
+    printf("%s\n",str);
+    printf("\nAfter compare :");
+    printf("%d\n", compare(str, result));
+    printf("\nString in upper case :");
+    lower_to_upper(str);
+    printf("%s\n", str);
+    printf("\nString in lower case :");
+    upper_to_lower(str);
+    printf("%s\n", str);
+    printf("\nSubstring :");
+    substring(str, 1, 3, result);
+    printf("%s\n", result);
+    printf("\nString after reversing :");
+    reverse(s);
+    printf("%s\n", s);
+
+    return 0;
 }
 
 

@@ -6,7 +6,6 @@ int getch(char ch[20] ,int p){
         return ch[i-1];   
     }
     
-
 }
 int main(){
     char a[20];
